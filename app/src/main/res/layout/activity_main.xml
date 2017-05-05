@@ -20,6 +20,7 @@
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginTop="-17dp"
+        android:text="1111"
         app:layout_constraintTop_toBottomOf="@+id/login"
         app:layout_constraintHorizontal_bias="0.529" />
 
@@ -42,7 +43,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Name"
+        android:text="логин"
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginRight="8dp"

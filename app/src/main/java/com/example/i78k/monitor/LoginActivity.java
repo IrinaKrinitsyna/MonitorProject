@@ -31,9 +31,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void onLoginFinished(Pair<Boolean, String> result) {
-        Toast.makeText(this, result.second, Toast.LENGTH_LONG).show();
         if (result.first){
             Intent intent = new Intent(this, TimeListActivity.class);
+            Bundle b = new Bundle();
+            b.putString("id", result.second); //Your id
+            intent.putExtras(b); //Put your id to your next Intent
             startActivity(intent);
         } else {
             Toast.makeText(this, result.second, Toast.LENGTH_LONG).show();
