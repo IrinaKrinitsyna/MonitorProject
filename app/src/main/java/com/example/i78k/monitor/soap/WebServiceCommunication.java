@@ -79,5 +79,39 @@ public class WebServiceCommunication {
             return new Pair<>(false, e.getMessage());
         }
     }
+//    <xs:element name="Id" type="xs:string"/>
+//    <xs:element name="IdConference" type="xs:string"/>
+//    <xs:element name="BeginTime" type="xs:dateTime"/>
+//    <xs:element name="EndTime" type="xs:dateTime"/>
+//    <xs:element name="Comment" type="xs:string"/>
+    public Pair<Boolean, String> reservation(String id, String idConference, String beginTime, String endTime, String comment) {
+        final String SOAP_ACTION = "Reservation";
+        final String METHOD_NAME = "Reservation";
+
+        SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
+        request.addProperty("Id", id);
+        request.addProperty("IdConference", idConference);
+        request.addProperty("BeginTime", beginTime);
+        request.addProperty("EndTime", endTime);
+        request.addProperty("Comment", comment);
+
+        SoapSerializationEnvelope envelope = getEnvelope(request);
+
+        HttpTransportSE androidHttpTransport = new HttpTransportBasicAuthSE(URL, User, Pass);
+
+        try {
+            androidHttpTransport.call(SOAP_ACTION, envelope);
+
+            Vector response = (Vector) envelope.getResponse();
+            if (response.get(1) == null) {
+                // no error info, it means success
+                return new Pair<>(true, "Бронирование успешно завершено");
+            } else {
+                return new Pair<>(false, response.get(1).toString());
+            }
+        } catch (Exception e) {
+            return new Pair<>(false, e.getMessage());
+        }
+    }
 
 }

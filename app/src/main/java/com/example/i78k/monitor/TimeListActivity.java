@@ -53,6 +53,10 @@ public class TimeListActivity extends AppCompatActivity {
         }
     }
 
+    public void onReservationFinished(Pair<Boolean, String> result) {
+        Toast.makeText(this, "Отправлено", Toast.LENGTH_SHORT).show();
+    }
+
     private class RoomsTask extends AsyncTask<String, Void, Pair<Boolean, String>> {
 
         private WebServiceCommunication wsCommunication;
@@ -93,7 +97,7 @@ public class TimeListActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 DialogList dialog = new DialogList();
-                dialog.list_pri(rooms,position);
+                dialog.setRoom(rooms.get(position));
                 dialog.show(getSupportFragmentManager(), "custom");
 
             }
@@ -110,10 +114,10 @@ public class TimeListActivity extends AppCompatActivity {
                 convertView = LayoutInflater.from(getContext())
                         .inflate(R.layout.post_item, null);
             }
-            ((TextView) convertView.findViewById(R.id.textV1))
+            ((TextView) convertView.findViewById(R.id.textCaption))
                     .setText(room.Name);
-            ((TextView) convertView.findViewById(R.id.textV2))
-                    .setText(room.sTiming);
+            ((TextView) convertView.findViewById(R.id.textTimingd))
+                    .setText(room.getTimings());
             return convertView;
         }
     }
