@@ -1,41 +1,56 @@
 package com.example.i78k.monitor;
 
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
+import android.text.TextWatcher;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.i78k.monitor.model.Room;
 import com.example.i78k.monitor.soap.WebServiceCommunication;
 
 import java.lang.ref.WeakReference;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.TimeZone;
 
 public class DialogList extends DialogFragment {
     TextView tv;
     String text;
     String roomeName;
+    String idUserD;
     String idRoom;
+    EditText timeFrom;
+    EditText endTime ;
+    EditText comentText ;
+
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-
-        builder.setTitle(roomeName);
         builder.setView(onCreateView())
+
                 .setPositiveButton("Отправить заявку", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        new ReservationTask((TimeListActivity) getActivity()).execute();
+                        new ReservationTask((TimeListActivity) getActivity())
+                                .execute(idUserD,idRoom,dateFormat(timeFrom.getText().toString()),
+                                        dateFormat(endTime.getText().toString()),comentText.getText().toString());
                     }
                 })
                 .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
@@ -54,14 +69,34 @@ public class DialogList extends DialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View V = inflater.inflate(R.layout.dialog, null, false);
         tv = (TextView) V.findViewById(R.id.textD);
+        timeFrom = (EditText) V.findViewById(R.id.timeFrom);
+        endTime = (EditText) V.findViewById(R.id.endTime);
+        comentText = (EditText) V.findViewById(R.id.comentText);
         tv.setText(text);
         return V;
     }
 
-    public void setRoom(Room room) {
+    public void setRoom(Room room,String idUser) {
         text = room.getTimings();
         roomeName = room.Name;
+        idRoom = room.Id;
+        idUserD= idUser;
     }
+    public String dateFormat(String date) {
+        @SuppressLint("SimpleDateFormat")
+        SimpleDateFormat parseFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss");
+        SimpleDateFormat viewFormat = new SimpleDateFormat("HH:mm");
+        parseFormat.setTimeZone(TimeZone.getTimeZone("UTC")); // TODO Check it
+        viewFormat.setTimeZone(TimeZone.getTimeZone("MSK")); // TODO Check it
+        try {
+            return parseFormat.format(viewFormat.parse(date));
+//            return parseFormat.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return "0";
+    }
+
     private class ReservationTask extends AsyncTask<String, Void, Pair<Boolean, String>> {
 
         private WebServiceCommunication wsCommunication;

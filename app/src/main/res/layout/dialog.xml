@@ -14,7 +14,7 @@
         android:gravity="center"
         />
     <LinearLayout
-        android:id="@+id/buttons_container"
+        android:id="@+id/buttonsContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">

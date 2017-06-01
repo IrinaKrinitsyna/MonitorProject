@@ -1,7 +1,13 @@
 package com.example.i78k.monitor.model;
 
 
+import android.annotation.SuppressLint;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 public class Room {
     public String Id = ""; //Первые три переменные из IP
@@ -14,7 +20,7 @@ public class Room {
     public String getTimings() {
         String sTiming = "";
         for (int i = 0; i < Timing.size(); i++) {
-            sTiming += Timing.get(i).BeginTime + " - " + Timing.get(i).EndTime + "\n";
+            sTiming += dateFormat(Timing.get(i).BeginTime) + " - " + dateFormat(Timing.get(i).EndTime) + "\n";
         }
         return sTiming;
     }
@@ -28,4 +34,20 @@ public class Room {
         return sTimingFull;
 
     }
+
+    public String dateFormat(String date) {
+        @SuppressLint("SimpleDateFormat")
+        SimpleDateFormat parseFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss");
+        SimpleDateFormat viewFormat = new SimpleDateFormat("HH:mm");
+        parseFormat.setTimeZone(TimeZone.getTimeZone("UTC")); // TODO Check it
+        viewFormat.setTimeZone(TimeZone.getTimeZone("MSK")); // TODO Check it
+        try {
+            return viewFormat.format(parseFormat.parse(date));
+//            return parseFormat.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return "0";
+    }
+
 }

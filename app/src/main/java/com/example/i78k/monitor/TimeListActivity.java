@@ -25,6 +25,7 @@ import java.util.List;
 public class TimeListActivity extends AppCompatActivity {
     protected ArrayAdapter<Room> adapter;
     protected ListView listview;
+    String idUser= ""; // or other values
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,10 +38,10 @@ public class TimeListActivity extends AppCompatActivity {
         adapter.clear();
 
         Bundle b = getIntent().getExtras();
-        String id = ""; // or other values
+
         if(b != null)
-            id = b.getString("id");
-        new RoomsTask(this).execute(id);
+            idUser = b.getString("id");
+        new RoomsTask(this).execute(idUser);
     }
 
     private void onGetRoomsFinished(Pair<Boolean, String> result) {
@@ -97,7 +98,7 @@ public class TimeListActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 DialogList dialog = new DialogList();
-                dialog.setRoom(rooms.get(position));
+                dialog.setRoom(rooms.get(position),idUser);
                 dialog.show(getSupportFragmentManager(), "custom");
 
             }
