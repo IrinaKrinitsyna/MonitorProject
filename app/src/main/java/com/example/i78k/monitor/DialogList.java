@@ -7,6 +7,7 @@ import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
@@ -23,9 +24,11 @@ import com.example.i78k.monitor.model.Room;
 import com.example.i78k.monitor.soap.WebServiceCommunication;
 
 import java.lang.ref.WeakReference;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.TimeZone;
 
 public class DialogList extends DialogFragment {
@@ -82,19 +85,42 @@ public class DialogList extends DialogFragment {
         idRoom = room.Id;
         idUserD= idUser;
     }
-    public String dateFormat(String date) {
-        @SuppressLint("SimpleDateFormat")
-        SimpleDateFormat parseFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss");
-        SimpleDateFormat viewFormat = new SimpleDateFormat("HH:mm");
-        parseFormat.setTimeZone(TimeZone.getTimeZone("UTC")); // TODO Check it
-        viewFormat.setTimeZone(TimeZone.getTimeZone("MSK")); // TODO Check it
+    public String dateFormat(String str) {
+
+
+        DateFormat formatter = new SimpleDateFormat("hh:mm:ss a");
+        Date date = null;
         try {
-            return parseFormat.format(viewFormat.parse(date));
-//            return parseFormat.parse(date);
+            date = formatter.parse(str);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return "0";
+
+        String pattern = "yyyy-MM-dd'T'hh:mm:ss";
+        SimpleDateFormat simpleDateFormat =
+                new SimpleDateFormat(pattern);
+
+        String date1 = simpleDateFormat.format(new Date());
+        return date1;
+
+//        Date parsData = new Date();
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//        sdf.format(parsData);
+//
+//        @SuppressLint("SimpleDateFormat")
+//        SimpleDateFormat parseFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss");
+//
+//        SimpleDateFormat viewFormat = new SimpleDateFormat("HH:mm");
+//        parseFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+//        viewFormat.setTimeZone(TimeZone.getTimeZone("MSK"));
+//
+//        try {
+//          return parseFormat.format(viewFormat.parse(date));
+////            return parseFormat.parse(date);
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//        return "0";
     }
 
     private class ReservationTask extends AsyncTask<String, Void, Pair<Boolean, String>> {

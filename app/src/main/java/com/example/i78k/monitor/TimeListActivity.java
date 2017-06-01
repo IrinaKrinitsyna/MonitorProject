@@ -55,7 +55,7 @@ public class TimeListActivity extends AppCompatActivity {
     }
 
     public void onReservationFinished(Pair<Boolean, String> result) {
-        Toast.makeText(this, "Отправлено", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Отправлено " + result.second, Toast.LENGTH_SHORT).show();
     }
 
     private class RoomsTask extends AsyncTask<String, Void, Pair<Boolean, String>> {
