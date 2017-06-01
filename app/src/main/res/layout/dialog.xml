@@ -13,34 +13,35 @@
         android:textSize="15sp"
         android:gravity="center"
         />
+
     <LinearLayout
         android:id="@+id/buttonsContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-    <EditText
-        android:id="@+id/timeFrom"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:inputType="time"/>
 
-    <EditText
-        android:id="@+id/endTime"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:inputType="time"/>
+        <TimePicker
+            android:id="@+id/timeFrom"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:timePickerMode="spinner"
+            android:layout_weight="1" />
+
+        <TimePicker
+            android:id="@+id/endTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:timePickerMode="spinner"
+            android:layout_weight="1" />
     </LinearLayout>
 
     <EditText
-        android:id="@+id/comentText"
+        android:id="@+id/commentText"
         android:layout_width="match_parent"
         android:layout_height="68dp"
+        android:textSize="22sp"
+        android:padding="12dp"
         android:layout_weight="0.06"
-/>
-
-
-
+        android:text="Комментарий"/>
 
 </LinearLayout>

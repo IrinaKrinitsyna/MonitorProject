@@ -1,17 +1,13 @@
 package com.example.i78k.monitor;
 
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
-import android.text.TextWatcher;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,36 +20,31 @@ import com.example.i78k.monitor.model.Room;
 import com.example.i78k.monitor.soap.WebServiceCommunication;
 
 import java.lang.ref.WeakReference;
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.TimeZone;
 
 public class DialogList extends DialogFragment {
+
     TextView tv;
     String text;
-    String roomeName;
+    String roomName;
     String idUserD;
     String idRoom;
-    EditText timeFrom;
-    EditText endTime ;
-    EditText comentText ;
-
+    TimePicker timeFrom;
+    TimePicker endTime ;
+    EditText commentText;
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        builder.setView(onCreateView())
-
+        builder.setView(createDialogView())
                 .setPositiveButton("Отправить заявку", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         new ReservationTask((TimeListActivity) getActivity())
-                                .execute(idUserD,idRoom,dateFormat(timeFrom.getText().toString()),
-                                        dateFormat(endTime.getText().toString()),comentText.getText().toString());
+                                .execute(idUserD, idRoom, dateFormat(timeFrom),
+                                        dateFormat(endTime), commentText.getText().toString());
                     }
                 })
                 .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
@@ -67,60 +58,33 @@ public class DialogList extends DialogFragment {
     }
 
 
-    public View onCreateView() {
-
+    public View createDialogView() {
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View V = inflater.inflate(R.layout.dialog, null, false);
-        tv = (TextView) V.findViewById(R.id.textD);
-        timeFrom = (EditText) V.findViewById(R.id.timeFrom);
-        endTime = (EditText) V.findViewById(R.id.endTime);
-        comentText = (EditText) V.findViewById(R.id.comentText);
+        View dialogView = inflater.inflate(R.layout.dialog, null, false);
+        tv = (TextView) dialogView.findViewById(R.id.textD);
+        timeFrom = (TimePicker) dialogView.findViewById(R.id.timeFrom);
+        timeFrom.setIs24HourView(true);
+        endTime = (TimePicker) dialogView.findViewById(R.id.endTime);
+        endTime.setIs24HourView(true);
+        commentText = (EditText) dialogView.findViewById(R.id.commentText);
         tv.setText(text);
-        return V;
+        return dialogView;
     }
 
     public void setRoom(Room room,String idUser) {
         text = room.getTimings();
-        roomeName = room.Name;
+        roomName = room.Name;
         idRoom = room.Id;
-        idUserD= idUser;
+        idUserD = idUser;
     }
-    public String dateFormat(String str) {
 
+    public String dateFormat(TimePicker tP) {
+        final Calendar c = Calendar.getInstance();
+        c.set(Calendar.MINUTE, tP.getCurrentMinute());
+        c.set(Calendar.HOUR_OF_DAY, tP.getCurrentHour());
 
-        DateFormat formatter = new SimpleDateFormat("hh:mm:ss a");
-        Date date = null;
-        try {
-            date = formatter.parse(str);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        String pattern = "yyyy-MM-dd'T'hh:mm:ss";
-        SimpleDateFormat simpleDateFormat =
-                new SimpleDateFormat(pattern);
-
-        String date1 = simpleDateFormat.format(new Date());
-        return date1;
-
-//        Date parsData = new Date();
-//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-//        sdf.format(parsData);
-//
-//        @SuppressLint("SimpleDateFormat")
-//        SimpleDateFormat parseFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss");
-//
-//        SimpleDateFormat viewFormat = new SimpleDateFormat("HH:mm");
-//        parseFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-//        viewFormat.setTimeZone(TimeZone.getTimeZone("MSK"));
-//
-//        try {
-//          return parseFormat.format(viewFormat.parse(date));
-////            return parseFormat.parse(date);
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//        return "0";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        return simpleDateFormat.format(c.getTime());
     }
 
     private class ReservationTask extends AsyncTask<String, Void, Pair<Boolean, String>> {
@@ -149,5 +113,4 @@ public class DialogList extends DialogFragment {
             }
         }
     }
-
 }

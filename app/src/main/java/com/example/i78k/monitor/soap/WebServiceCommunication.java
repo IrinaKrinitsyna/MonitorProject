@@ -79,11 +79,7 @@ public class WebServiceCommunication {
             return new Pair<>(false, e.getMessage());
         }
     }
-//    <xs:element name="Id" type="xs:string"/>
-//    <xs:element name="IdConference" type="xs:string"/>
-//    <xs:element name="BeginTime" type="xs:dateTime"/>
-//    <xs:element name="EndTime" type="xs:dateTime"/>
-//    <xs:element name="Comment" type="xs:string"/>
+
     public Pair<Boolean, String> reservation(String id, String idConference, String beginTime, String endTime, String comment) {
         final String SOAP_ACTION = "Reservation";
         final String METHOD_NAME = "Reservation";
@@ -113,5 +109,4 @@ public class WebServiceCommunication {
             return new Pair<>(false, e.getMessage());
         }
     }
-
 }

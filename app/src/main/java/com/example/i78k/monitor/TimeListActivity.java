@@ -48,14 +48,14 @@ public class TimeListActivity extends AppCompatActivity {
         try {
             List<Room> rooms = new ObjectMapper().readValue(result.second,
                     new ObjectMapper().getTypeFactory().constructCollectionType(List.class, Room.class));
-             shourooms(rooms);
+             showRooms(rooms);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public void onReservationFinished(Pair<Boolean, String> result) {
-        Toast.makeText(this, "Отправлено " + result.second, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Отправлено " + result.second, Toast.LENGTH_LONG).show();
     }
 
     private class RoomsTask extends AsyncTask<String, Void, Pair<Boolean, String>> {
@@ -87,7 +87,7 @@ public class TimeListActivity extends AppCompatActivity {
         }
     }
 
-    public void shourooms(final List <Room> rooms) {
+    public void showRooms(final List <Room> rooms) {
         adapter = new MonoAdapter(TimeListActivity.this);
         listview = (ListView) findViewById(R.id.listview);
         for (int i = 0; i < rooms.size(); i++) {
@@ -122,7 +122,5 @@ public class TimeListActivity extends AppCompatActivity {
             return convertView;
         }
     }
-
-
 }
 

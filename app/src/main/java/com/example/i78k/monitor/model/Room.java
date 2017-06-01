@@ -5,7 +5,6 @@ import android.annotation.SuppressLint;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -37,7 +36,7 @@ public class Room {
 
     public String dateFormat(String date) {
         @SuppressLint("SimpleDateFormat")
-        SimpleDateFormat parseFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss");
+        SimpleDateFormat parseFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         SimpleDateFormat viewFormat = new SimpleDateFormat("HH:mm");
         parseFormat.setTimeZone(TimeZone.getTimeZone("UTC")); // TODO Check it
         viewFormat.setTimeZone(TimeZone.getTimeZone("MSK")); // TODO Check it
